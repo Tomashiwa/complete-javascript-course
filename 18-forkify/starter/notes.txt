@@ -1,0 +1,70 @@
+@@ Imports for polyfilling
+import 'regenerator-runtime/runtime'; // Polyfill async await
+import 'core-js/stable'; // Polyfill remaining stuff
+
+@@ Getting relative path to assets in a shipping product
+import icons from '../img/icons.svg'; // Parcel 1
+import icons from 'url:../img/icons.svg'; // Parcel 2
+
+@@ Remove any children element in parentEl
+parentEl.innerHTML = '';
+
+@@ Mapping objects to an array of HTML to insert into another HTML
+<ul class="recipe__ingredient-list">
+    ${
+      // Mapping object to array of strings and joining to a large string
+      recipe.ingredients
+        .map(ingre => {
+          return `
+            <li class="recipe__ingredient">
+              <svg class="recipe__icon">
+                <use href="${icons}#icon-check"></use>
+              </svg>
+              <div class="recipe__quantity">${ingre.quantity}</div>
+              <div class="recipe__description">
+                <span class="recipe__unit">${ingre.unit}</span>
+                ${ingre.description}
+              </div>
+            </li>
+          `;
+        })
+        .join('\n')
+    }
+</ul>
+
+@@ hash value in url
+window.location.hash
+
+@@ hashChange event
+
+@@ Clear seperation with MVC architecture
+
+@@ How MVC structure is upheld
+
+@@ Standard to have helper and config modules
+
+@@ Propagating error to maintain the MVC seperation
+
+@@ Create a virtual DOM, allowing us to compare with current DOM to check for modification
+document.createRange().createContextualFragment(newHTML);
+
+@@ Node and element relationship
+
+@@ Only re-render modified elements to be performant
+
+@@ .nodeValue, .textContent
+
+@@ Array.prototype.some(...) and Array.prototype.every(...)
+
+@@ Use Array.prototype.findIndex(...) and Array.prototype.splice(...) to remove an element
+
+@@ Window history pushState
+
+@@ Verify key's existence before destructuring
+return {
+  id: rec.id,
+  imageUrl: rec.image_url,
+  publisher: rec.publisher,
+  title: rec.title,
+  ...(rec.key && {key: rec.key}) // 
+};
