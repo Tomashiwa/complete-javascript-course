@@ -41,9 +41,6 @@ export const loadRecipe = async function (id) {
       bookmark => bookmark.id === id
     );
   } catch (err) {
-    // Temp error handling
-    // console.error(err);
-
     // Propagate error back to controller to be caught and displayed
     throw err;
   }
@@ -59,9 +56,11 @@ export const loadSearchResults = async function (query) {
         imageUrl: rec.image_url,
         publisher: rec.publisher,
         title: rec.title,
-        ...(rec.key && { key: rec.key }), // Verify key's existence before destructuring
+        ...(rec.key && { key: rec.key }), // Verify key's existence before adding
       };
     });
+
+    // Reset page back to 1
     state.search.page = 1;
   } catch (err) {
     throw err;
@@ -104,11 +103,9 @@ export const removeBookmark = function (id) {
   // Delete bookmark
   const index = state.bookmarks.findIndex(bookmark => bookmark.id === id);
   state.bookmarks.splice(index, 1);
-  // state.bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== id);
 
   if (id === state.recipe.id) {
     state.recipe.bookmarked = false;
-    console.log(state.recipe);
   }
 
   persistBookmarks();
@@ -116,6 +113,7 @@ export const removeBookmark = function (id) {
 
 export const uploadRecipe = async function (newRecipe) {
   try {
+    // Format ingredients for upload
     const ingredients = Object.entries(newRecipe)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(entry => {
@@ -131,7 +129,6 @@ export const uploadRecipe = async function (newRecipe) {
           description,
         };
       });
-    console.log(ingredients);
 
     // Format recipe for upload
     const recipe = {
@@ -143,7 +140,6 @@ export const uploadRecipe = async function (newRecipe) {
       servings: +newRecipe.servings,
       ingredients,
     };
-    console.log(recipe);
 
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
     state.recipe = createRecipeObj(data);
@@ -162,4 +158,3 @@ const init = function () {
   if (storage) state.bookmarks = JSON.parse(storage);
 };
 init();
-console.log(state.bookmarks);

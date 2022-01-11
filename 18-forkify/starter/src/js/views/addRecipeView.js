@@ -1,8 +1,5 @@
 // Handle the pagination buttons
 import View from './View';
-// Get relative path to assets via Parcel in a shipping product
-// import icons from '../img/icons.svg'; // Parcel 1
-import icons from 'url:../../img/icons.svg'; // Parcel 2
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector('.upload');

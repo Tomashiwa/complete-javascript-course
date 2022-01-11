@@ -1,8 +1,8 @@
 import * as model from './model';
-import recipeView from './views/recipeView';
 
 import 'regenerator-runtime/runtime'; // Polyfill async await
 import 'core-js/stable'; // Polyfill remaining stuff
+import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
 import paginationView from './views/paginationView';
@@ -24,7 +24,7 @@ const controlRecipes = async function () {
     // Initiates a spinner
     recipeView.renderSpinner();
 
-    // Mark selection on search results
+    // Highlight the current recipe in the results list
     resultsView.update(model.getSearchResultsPage());
 
     // Load recipe
@@ -33,11 +33,9 @@ const controlRecipes = async function () {
     // Render recipe
     recipeView.render(model.state.recipe);
 
-    // Render bookmark dropdown to highlight if any
+    // Highlight the current recipe in the bookmark list if it is bookmarked
     bookmarksView.render(model.state.bookmarks);
   } catch (err) {
-    // console.error(err);
-
     // Errors thrown by model are also propagated to here
     recipeView.renderError();
   }
@@ -77,12 +75,11 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   // Update view
-  // recipeView.render(model.state.recipe); // Full render
   recipeView.update(model.state.recipe); // Only re-render modified elements
 };
 
-const controlAddBookmark = function () {
-  // Add / remove bookmarks in modal
+const controlToggleBookmark = function () {
+  // Add / remove bookmark
   if (!model.state.recipe.bookmarked) {
     model.addBookmark(model.state.recipe);
   } else if (model.state.recipe.bookmarked) {
@@ -97,7 +94,7 @@ const controlAddBookmark = function () {
 };
 
 const controlBookmarks = function () {
-  // Render bookmarks into bookmark list upon load
+  // Render bookmarks into bookmark list
   bookmarksView.render(model.state.bookmarks);
 };
 
@@ -106,7 +103,6 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderSpinner();
 
     await model.uploadRecipe(newRecipe);
-    console.log(model.state.recipe);
 
     // Render new recipe
     recipeView.render(model.state.recipe);
@@ -129,11 +125,11 @@ const controlAddRecipe = async function (newRecipe) {
 };
 
 const init = function () {
-  // Subscribe to Views with a callback func
+  // Subscribe callbacks to events happening in various Views
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerServings(controlServings);
-  recipeView.addHandlerBookmark(controlAddBookmark);
+  recipeView.addHandlerBookmark(controlToggleBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView._addHandlerUpload(controlAddRecipe);

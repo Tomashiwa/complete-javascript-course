@@ -159,5 +159,4 @@ class RecipeView extends View {
   }
 }
 
-// Since there can only be 1 view for each type of view, just create and export it
 export default new RecipeView();

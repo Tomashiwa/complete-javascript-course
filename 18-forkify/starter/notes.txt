@@ -9,7 +9,7 @@ import icons from 'url:../img/icons.svg'; // Parcel 2
 @@ Remove any children element in parentEl
 parentEl.innerHTML = '';
 
-@@ Mapping objects to an array of HTML to insert into another HTML
+@@ Mapping an array of objects to an array of HTML to insert into another HTML
 <ul class="recipe__ingredient-list">
     ${
       // Mapping object to array of strings and joining to a large string
@@ -32,39 +32,103 @@ parentEl.innerHTML = '';
     }
 </ul>
 
-@@ hash value in url
-window.location.hash
-
-@@ hashChange event
-
-@@ Clear seperation with MVC architecture
-
-@@ How MVC structure is upheld
-
-@@ Standard to have helper and config modules
-
-@@ Propagating error to maintain the MVC seperation
-
+@@ Comparing whether set of elements are the same by comparing DOMs
 @@ Create a virtual DOM, allowing us to compare with current DOM to check for modification
 document.createRange().createContextualFragment(newHTML);
 
-@@ Node and element relationship
-
-@@ Only re-render modified elements to be performant
-
-@@ .nodeValue, .textContent
-
-@@ Array.prototype.some(...) and Array.prototype.every(...)
-
 @@ Use Array.prototype.findIndex(...) and Array.prototype.splice(...) to remove an element
+arr.splice(arr.findIndex("apple"), 1);
 
-@@ Window history pushState
+@@ Use Array.prototype.some(...) and Array.prototype.every(...) to check if elements satisfy a condition
+arr.some(element => element > 10);
+arr.every(element => element <= 100);
 
-@@ Verify key's existence before destructuring
-return {
+@@ When UI events involve elements that may not always be present, consider using event delegation
+@@ e.target.closest(...) can be used to find the closest ancestor that satisfy the given query
+itemList.addEventListener("click", function(e) {
+  const item = e.target.closest(".item");
+  ...
+});
+
+@@ To optimize performance, consider only re-rendering the modified elements when an event happens to 
+@@ minimize workload of DOM
+
+@@ Verify a value's existence before adding to an object
+{
   id: rec.id,
   imageUrl: rec.image_url,
   publisher: rec.publisher,
   title: rec.title,
   ...(rec.key && {key: rec.key}) // 
 };
+
+@@ It is common for projects to have Helper and Config modules to provide functionalities and variables
+@@ that will be used across the project
+helper.js, config.js
+
+@@ History API
+@@
+Window object provide access to the browser's session history through
+the "history" object (ie. Window.history), exposing methods and properties
+that allow navigation of user's history and manipulating the history stack
+
+Navigation: .forward(), .back(), .go()
+Manipulate stack: pushState(), replaceState()
+@@
+
+@@ Node and element relationship
+@@
+Node is the smallest unit in the DOM tree.
+
+There are different types of Nodes, including Element, Text, Comment, and Document.
+Each is responsible for different aspect of an HTML document (Refer to the tree in Notes section 13).
+
+In this case, Element is a Node that represents a HTML element and contains properties
+and methods unique to that type of HTML element
+eg. <p> ... </p> (just the <p> tags, not what's inside)
+
+Text -> The text within a HTML element (eg. TEXT in <p> TEXT </p>)
+Comment -> Comment in a HTML document
+Document -> The overall document, root node of the DOM
+@@
+
+@@ .nodeValue, .textContent
+@@
+.nodeValue -> Value of the current node, differing based on type of node
+Comment: Comment itself
+Document: Null
+Element: Null 
+Text: Text content itself
+
+.textContent -> Text content of the node and its descendants
+Document: Null
+Comment / Text: .nodeValue
+Element: Concat of every child node's .textContent
+@@
+
+@@ Existence of text node in element
+If there is text between an element's enclosing tag, there will be a child text
+node in the element node
+
+@@ URI fragment 
+@@
+A string of characters at the end of an URL that refers to a resource on the page.
+This string comes after a # like so: http://youtube.com/history#today where the
+fragment is "today"
+
+Change in the fragment can be detected via the hashchange event
+Access to the fragment can be done through "window.location.hash"
+@@
+
+@@ MVC architecture in this project
+@@
+
+  Model     <--     Controller    -->     View and its child classes
+
+  . Model and Views have no knowledge of Controller, only exposing their API for the Controller to manipulate
+    - Controller uses Model to obtain data and passed into View for display
+
+  . Views provide a method for Controller to subscribe callbacks to UI events happened in those Views
+    - Allowing the appropriate action to be taken by the application
+
+@@

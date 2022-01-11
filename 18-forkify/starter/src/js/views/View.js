@@ -1,5 +1,4 @@
 // Get relative path to assets via Parcel in a shipping product
-// import icons from '../img/icons.svg'; // Parcel 1
 import icons from 'url:../../img/icons.svg'; // Parcel 2
 
 export default class View {
@@ -7,7 +6,7 @@ export default class View {
   _parentElement = document.querySelector('.recipe');
   // Data to render
   _data;
-  // What the messages contain should be known by the View
+  // What the messages contain, should be known by the View instead of the controller
   _errorMsg = 'We could not find that recipe. Please try another one!';
   _msg;
 
